@@ -37,6 +37,8 @@ new cvar_respawn_on_suicide
 public plugin_init()
 {
 	register_plugin("[ZP] Deathmatch", ZP_VERSION_STRING, "ZP Dev Team")
+
+	register_event( "TeamInfo", "fw_JoinTeam", "a");
 	
 	RegisterHam(Ham_Spawn, "player", "fw_PlayerSpawn_Post", 1)
 	RegisterHamBots(Ham_Spawn, "fw_PlayerSpawn_Post", 1)
@@ -52,6 +54,40 @@ public plugin_init()
 	g_MaxPlayers = get_maxplayers()
 	
 	g_Forwards[FW_USER_RESPAWN_PRE] = CreateMultiForward("zp_fw_deathmatch_respawn_pre", ET_CONTINUE, FP_CELL)
+}
+
+public fw_JoinTeam()
+{
+	if(get_pcvar_num(cvar_deathmatch))
+	{
+		new id = read_data(1);
+
+		// Respawn if human/zombie?
+		if ((zp_core_is_zombie(id) && !get_pcvar_num(cvar_respawn_zombies)) 
+		|| (!zp_core_is_zombie(id) && !get_pcvar_num(cvar_respawn_humans)))
+			return;
+
+		static user_team[32]; 
+		
+		read_data(2, user_team, charsmax(user_team)); 
+		
+		if(!is_user_connected(id) || is_user_alive(id)) 
+			return; 
+		
+		switch(user_team[0]) 
+		{
+			case 'C':  
+			{
+				// Set the respawn task
+				set_task(get_pcvar_float(cvar_respawn_delay), "respawn_player_task", id+TASK_RESPAWN)
+			}
+			case 'T':
+			{ 
+				// Set the respawn task
+				set_task(get_pcvar_float(cvar_respawn_delay), "respawn_player_task", id+TASK_RESPAWN)
+			}
+		}
+	}
 }
 
 // Ham Player Spawn Post Forward
@@ -120,7 +156,11 @@ respawn_player_manually(id)
 	ExecuteHamB(Ham_CS_RoundRespawn, id)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Remove tasks on disconnect
 	remove_task(id+TASK_RESPAWN)
