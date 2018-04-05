@@ -150,7 +150,11 @@ public native_enable_ham_forward_bots(plugin_id, num_params)
 	return true;
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id_leaving)
+#else
+public client_disconnected(id_leaving)
+#endif
 {
 	// Our CZ Bot used for registering hooks is leaving
 	if (id_leaving == g_CZBotPlayerID)
