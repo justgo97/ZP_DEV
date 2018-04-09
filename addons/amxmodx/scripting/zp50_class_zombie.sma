@@ -131,6 +131,8 @@ public plugin_natives()
 	register_native("zp_class_zombie_get_real_name", "_class_zombie_get_real_name")
 	register_native("zp_class_zombie_get_desc", "native_class_zombie_get_desc")
 	register_native("zp_class_zombie_get_kb", "native_class_zombie_get_kb")
+	register_native("zp_class_zombie_get_speed", "native_class_zombie_get_speed")
+	register_native("zp_class_zombie_get_gravity", "native_class_zombie_get_gravity")
 	register_native("zp_class_zombie_get_count", "native_class_zombie_get_count")
 	register_native("zp_class_zombie_show_menu", "native_class_zombie_show_menu")
 	register_native("zp_class_zombie_menu_text_add", "_class_zombie_menu_text_add")
@@ -156,7 +158,11 @@ public client_putinserver(id)
 	g_ZombieClassNext[id] = ZP_INVALID_ZOMBIE_CLASS
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Reset remembered menu pages
 	MENU_PAGE_CLASS = 0
@@ -757,8 +763,36 @@ public Float:native_class_zombie_get_kb(plugin_id, num_params)
 		return ZOMBIES_DEFAULT_KNOCKBACK;
 	}
 	
-	// Return zombie class knockback)
+	// Return zombie class knockback
 	return ArrayGetCell(g_ZombieClassKnockback, classid);
+}
+
+public Float:native_class_zombie_get_speed(plugin_id, num_params)
+{
+	new classid = get_param(1)
+	
+	if (classid < 0 || classid >= g_ZombieClassCount)
+	{
+		log_error(AMX_ERR_NATIVE, "[ZP] Invalid zombie class id (%d)", classid)
+		return ZOMBIES_DEFAULT_SPEED;
+	}
+	
+	// Return zombie class speed
+	return ArrayGetCell(g_ZombieClassSpeed, classid);
+}
+
+public Float:native_class_zombie_get_gravity(plugin_id, num_params)
+{
+	new classid = get_param(1)
+	
+	if (classid < 0 || classid >= g_ZombieClassCount)
+	{
+		log_error(AMX_ERR_NATIVE, "[ZP] Invalid zombie class id (%d)", classid)
+		return ZOMBIES_DEFAULT_GRAVITY;
+	}
+	
+	// Return zombie class gravity
+	return ArrayGetCell(g_ZombieClassGravity, classid);
 }
 
 public native_class_zombie_get_count(plugin_id, num_params)
