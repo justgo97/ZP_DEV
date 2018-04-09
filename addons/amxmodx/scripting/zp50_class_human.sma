@@ -119,6 +119,8 @@ public plugin_natives()
 	register_native("zp_class_human_get_name", "native_class_human_get_name")
 	register_native("zp_class_human_get_real_name", "_class_human_get_real_name")
 	register_native("zp_class_human_get_desc", "native_class_human_get_desc")
+	register_native("zp_class_human_get_speed", "native_class_human_get_speed")
+	register_native("zp_class_human_get_gravity", "native_class_human_get_gravity")
 	register_native("zp_class_human_get_count", "native_class_human_get_count")
 	register_native("zp_class_human_show_menu", "native_class_human_show_menu")
 	register_native("zp_class_human_menu_text_add", "_class_human_menu_text_add")
@@ -140,7 +142,11 @@ public client_putinserver(id)
 	g_HumanClassNext[id] = ZP_INVALID_HUMAN_CLASS
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Reset remembered menu pages
 	MENU_PAGE_CLASS = 0
@@ -611,6 +617,34 @@ public native_class_human_get_desc(plugin_id, num_params)
 	new len = get_param(3)
 	set_string(2, description, len)
 	return true;
+}
+
+public Float:native_class_human_get_speed(plugin_id, num_params)
+{
+	new classid = get_param(1)
+	
+	if (classid < 0 || classid >= g_HumanClassCount)
+	{
+		log_error(AMX_ERR_NATIVE, "[ZP] Invalid human class id (%d)", classid)
+		return HUMANS_DEFAULT_SPEED;
+	}
+	
+	// Return zombie class speed
+	return ArrayGetCell(g_HumanClassSpeed, classid);
+}
+
+public Float:native_class_human_get_gravity(plugin_id, num_params)
+{
+	new classid = get_param(1)
+	
+	if (classid < 0 || classid >= g_HumanClassCount)
+	{
+		log_error(AMX_ERR_NATIVE, "[ZP] Invalid human class id (%d)", classid)
+		return HUMANS_DEFAULT_GRAVITY;
+	}
+	
+	// Return zombie class gravity
+	return ArrayGetCell(g_HumanClassGravity, classid);
 }
 
 public native_class_human_get_count(plugin_id, num_params)

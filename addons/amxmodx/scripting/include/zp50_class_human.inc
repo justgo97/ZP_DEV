@@ -115,6 +115,22 @@ native zp_class_human_get_real_name(classid, real_name[], len)
 native zp_class_human_get_desc(classid, description[], len)
 
 /**
+ * Returns a human class' Speed.
+ *
+ * @param classid		A valid human class ID.
+ * @return				Speed (float value).
+ */
+native Float:zp_class_human_get_speed(classid)
+
+/**
+ * Returns a human class' Gravity.
+ *
+ * @param classid		A valid human class ID.
+ * @return				Gravity (float value).
+ */
+native Float:zp_class_human_get_gravity(classid)
+
+/**
  * Returns number of registered human classes.
  *
  * @return			Human class count.

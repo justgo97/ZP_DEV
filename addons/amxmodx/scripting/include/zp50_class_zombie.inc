@@ -140,6 +140,22 @@ native zp_class_zombie_get_desc(classid, description[], len)
 native Float:zp_class_zombie_get_kb(classid)
 
 /**
+ * Returns a zombie class' Speed.
+ *
+ * @param classid		A valid zombie class ID.
+ * @return				Speed (float value).
+ */
+native Float:zp_class_zombie_get_speed(classid)
+
+/**
+ * Returns a zombie class' Gravity.
+ *
+ * @param classid		A valid zombie class ID.
+ * @return				Gravity (float value).
+ */
+native Float:zp_class_zombie_get_gravity(classid)
+
+/**
  * Returns number of registered zombie classes.
  *
  * @return			Zombie class count.
