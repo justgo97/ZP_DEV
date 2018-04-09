@@ -18,11 +18,8 @@
 
 #define MAXPLAYERS 32
 
-#if AMXX_VERSION_NUM < 183
-// Hack to be able to use Ham_Player_ResetMaxSpeed (by joaquimandrade)
-new Ham:Ham_Player_ResetMaxSpeed = Ham_Item_PreFrame
-#else 
-#define Ham_Player_ResetMaxSpeed Ham_CS_Player_ResetMaxSpeed
+#if !defined Ham_CS_Player_ResetMaxSpeed
+const Ham:Ham_CS_Player_ResetMaxSpeed = Ham_Item_PreFrame
 #endif
 
 #define flag_get(%1,%2)		(%1 & (1 << (%2 & 31)))
@@ -40,8 +37,8 @@ public plugin_init()
 	register_event("HLTV", "event_round_start", "a", "1=0", "2=0")
 	register_logevent("logevent_round_start",2, "1=Round_Start")
 
-	RegisterHam(Ham_Player_ResetMaxSpeed, "player", "fw_ResetMaxSpeed_Post", 1)
-	RegisterHamBots(Ham_Player_ResetMaxSpeed, "fw_ResetMaxSpeed_Post", 1)
+	RegisterHam(Ham_CS_Player_ResetMaxSpeed, "player", "fw_ResetMaxSpeed_Post", 1)
+	RegisterHamBots(Ham_CS_Player_ResetMaxSpeed, "fw_ResetMaxSpeed_Post", 1)
 }
 
 public plugin_cfg()
@@ -85,7 +82,7 @@ public native_set_player_maxspeed(plugin_id, num_params)
 	else
 		flag_unset(g_MaxSpeedIsMultiplier, id)
 	
-	ExecuteHamB(Ham_Player_ResetMaxSpeed, id)
+	ExecuteHamB(Ham_CS_Player_ResetMaxSpeed, id)
 	return true;
 }
 
@@ -105,7 +102,7 @@ public native_reset_player_maxspeed(plugin_id, num_params)
 	
 	flag_unset(g_HasCustomMaxSpeed, id)
 	
-	ExecuteHamB(Ham_Player_ResetMaxSpeed, id)
+	ExecuteHamB(Ham_CS_Player_ResetMaxSpeed, id)
 	return true;
 }
 
