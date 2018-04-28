@@ -82,7 +82,11 @@ public client_putinserver(id)
 	}
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	remove_task(id+TASK_SHOWHUD)
 }

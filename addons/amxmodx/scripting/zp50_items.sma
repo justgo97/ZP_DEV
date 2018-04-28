@@ -224,7 +224,11 @@ public native_items_menu_text_add(plugin_id, num_params)
 	format(g_AdditionalMenuText, charsmax(g_AdditionalMenuText), "%s%s", g_AdditionalMenuText, text)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Reset remembered menu pages
 	MENU_PAGE_ITEMS = 0

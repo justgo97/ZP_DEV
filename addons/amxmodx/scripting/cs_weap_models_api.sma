@@ -291,7 +291,11 @@ RemoveCustomWeaponModel(id, weaponid)
 	}
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Remove custom models for player after disconnecting
 	new weaponid

@@ -231,7 +231,11 @@ public clcmd_buy(id)
 	show_available_buy_menus(id)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	WPN_AUTO_ON = 0
 	WPN_STARTID = 0

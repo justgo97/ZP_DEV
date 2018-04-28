@@ -80,7 +80,11 @@ public event_round_start()
 		remove_task(id+TASK_TEAMMSG)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	remove_task(id+TASK_TEAMMSG)
 }

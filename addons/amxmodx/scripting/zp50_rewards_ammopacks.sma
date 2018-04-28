@@ -211,7 +211,11 @@ public zp_fw_gamemodes_end()
 	}
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Clear damage after disconnecting
 	g_DamageDealtToZombies[id] = 0.0

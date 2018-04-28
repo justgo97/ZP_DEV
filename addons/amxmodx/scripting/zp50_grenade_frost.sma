@@ -274,7 +274,11 @@ public zp_fw_core_infect_post(id, attacker)
 	}
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	flag_unset(g_IsFrozen, id)
 	remove_task(id+TASK_FROST_REMOVE)

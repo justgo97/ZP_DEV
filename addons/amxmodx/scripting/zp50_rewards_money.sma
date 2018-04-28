@@ -297,7 +297,11 @@ public event_game_restart()
 	g_GameRestarting = true
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Clear saved money after disconnecting
 	g_MoneyAtRoundStart[id] = NO_DATA

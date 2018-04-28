@@ -339,7 +339,11 @@ public fw_PlayerKilled(victim, attacker, shouldgib)
 	remove_task(victim+TASK_IDLE_SOUNDS)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Remove idle sounds task
 	remove_task(id+TASK_IDLE_SOUNDS)

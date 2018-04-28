@@ -146,7 +146,11 @@ public plugin_natives()
 	register_native("zp_class_survivor_get_count", "native_class_survivor_get_count")
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	if (flag_get(g_IsSurvivor, id))
 	{

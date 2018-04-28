@@ -259,7 +259,11 @@ respawn_player_manually(id)
 }
 
 // Client Disconnecting (prevent Game Commencing bug after last player on a team leaves)
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(leaving_player)
+#else
+public client_disconnected(leaving_player)
+#endif
 {
 	// Remove respawn task on disconnect
 	remove_task(leaving_player+TASK_RESPAWN)

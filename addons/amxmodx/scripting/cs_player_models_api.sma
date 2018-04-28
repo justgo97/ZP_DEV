@@ -141,7 +141,11 @@ public native_reset_player_model(plugin_id, num_params)
 	return true;
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	remove_task(id+TASK_MODELCHANGE)
 	flag_unset(g_HasCustomModel, id)

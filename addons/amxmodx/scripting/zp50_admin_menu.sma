@@ -128,7 +128,11 @@ public native_admin_menu_show(plugin_id, num_params)
 	return true;
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Reset remembered menu pages
 	MENU_PAGE_GAME_MODES = 0

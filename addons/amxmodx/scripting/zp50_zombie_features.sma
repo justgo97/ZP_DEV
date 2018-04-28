@@ -103,7 +103,11 @@ public fw_PlayerKilled(victim, attacker, shouldgib)
 	remove_task(victim+TASK_BLOOD)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Remove bleeding task
 	remove_task(id+TASK_BLOOD)

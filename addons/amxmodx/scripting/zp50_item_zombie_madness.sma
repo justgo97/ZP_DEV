@@ -264,7 +264,11 @@ public remove_zombie_madness(taskid)
 	flag_unset(g_MadnessBlockDamage, ID_MADNESS)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Remove tasks on disconnect
 	remove_task(id+TASK_MADNESS)

@@ -154,7 +154,11 @@ public native_filter(const name[], index, trap)
 	return PLUGIN_CONTINUE;
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	if (flag_get(g_IsNemesis, id))
 	{

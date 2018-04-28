@@ -204,7 +204,11 @@ public fw_PlayerKilled(victim, attacker, shouldgib)
 	remove_task(victim+TASK_CHARGE)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Reset flashlight flags
 	flag_unset(g_FlashlightActive, id)

@@ -274,7 +274,11 @@ public spectator_nightvision(id)
 		DisableNightVision(id)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Reset nightvision flags
 	flag_unset(g_NightVisionActive, id)

@@ -86,7 +86,11 @@ public zp_fw_core_cure(id, attacker)
 		set_user_rendering(id)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Player was using zombie class with custom rendering, restore it to normal
 	if (zp_class_zombie_get_current(id) == g_ZombieClassID)

@@ -124,7 +124,11 @@ public remove_spawn_protection(taskid)
 	flag_unset(g_SpawnProtectBlockDamage, ID_SPAWNPROTECT)
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Remove tasks on disconnect
 	remove_task(id+TASK_SPAWNPROTECT)

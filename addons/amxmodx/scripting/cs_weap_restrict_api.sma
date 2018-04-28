@@ -134,7 +134,11 @@ public native_get_player_weap_restrict(plugin_id, num_params)
 	return true;
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	flag_unset(g_HasWeaponRestrictions, id)
 }

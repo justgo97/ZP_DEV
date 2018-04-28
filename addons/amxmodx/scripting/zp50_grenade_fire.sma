@@ -257,7 +257,11 @@ public fw_PlayerKilled(victim, attacker, shouldgib)
 	g_BurningDuration[victim] = 0
 }
 
+#if AMXX_VERSION_NUM < 183
 public client_disconnect(id)
+#else
+public client_disconnected(id)
+#endif
 {
 	// Stop burning
 	remove_task(id+TASK_BURN)
