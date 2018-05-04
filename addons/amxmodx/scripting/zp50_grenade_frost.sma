@@ -14,9 +14,12 @@
 #include <fakemeta>
 #include <hamsandwich>
 #include <amx_settings_api>
+#include <cs_maxspeed_api>
 #include <cs_weap_models_api>
 #include <cs_ham_bots_api>
 #include <zp50_core>
+#include <zp50_class_zombie>
+#include <zp50_class_human>
 
 // Settings file
 new const ZP_SETTINGS_FILE[] = "zombieplague.ini"
@@ -54,9 +57,6 @@ new Array:g_sound_grenade_frost_break
 #define flag_get_boolean(%1,%2) (flag_get(%1,%2) ? true : false)
 #define flag_set(%1,%2) %1 |= (1 << (%2 & 31))
 #define flag_unset(%1,%2) %1 &= ~(1 << (%2 & 31))
-
-// Hack to be able to use Ham_Player_ResetMaxSpeed (by joaquimandrade)
-new Ham:Ham_Player_ResetMaxSpeed = Ham_Item_PreFrame
 
 // Explosion radius for custom grenades
 const Float:NADE_EXPLOSION_RADIUS = 240.0
@@ -96,8 +96,6 @@ public plugin_init()
 {
 	register_plugin("[ZP] Grenade: Frost", ZP_VERSION_STRING, "ZP Dev Team")
 	
-	RegisterHam(Ham_Player_ResetMaxSpeed, "player", "fw_ResetMaxSpeed_Post", 1)
-	RegisterHamBots(Ham_Player_ResetMaxSpeed, "fw_ResetMaxSpeed_Post", 1)
 	RegisterHam(Ham_TakeDamage, "player", "fw_TakeDamage")
 	RegisterHamBots(Ham_TakeDamage, "fw_TakeDamage")
 	RegisterHam(Ham_TraceAttack, "player", "fw_TraceAttack")
@@ -282,16 +280,6 @@ public client_disconnected(id)
 {
 	flag_unset(g_IsFrozen, id)
 	remove_task(id+TASK_FROST_REMOVE)
-}
-
-public fw_ResetMaxSpeed_Post(id)
-{
-	// Dead or not frozen
-	if (!is_user_alive(id) || !flag_get(g_IsFrozen, id))
-		return;
-	
-	// Prevent from moving
-	set_user_maxspeed(id, 1.0)
 }
 
 // Ham Trace Attack Forward
@@ -530,7 +518,7 @@ set_freeze(victim)
 	ApplyFrozenGravity(victim)
 	
 	// Update player's maxspeed
-	ExecuteHamB(Ham_Player_ResetMaxSpeed, victim)
+	cs_set_player_maxspeed(victim, 0.1)
 	
 	// Set a task to remove the freeze
 	set_task(get_pcvar_float(cvar_grenade_frost_duration), "remove_freeze", victim+TASK_FROST_REMOVE)
@@ -591,7 +579,14 @@ public remove_freeze(taskid)
 	set_pev(ID_FROST_REMOVE, pev_gravity, g_FrozenGravity[ID_FROST_REMOVE])
 	
 	// Update player's maxspeed
-	ExecuteHamB(Ham_Player_ResetMaxSpeed, ID_FROST_REMOVE)
+	if(zp_core_is_zombie(ID_FROST_REMOVE))
+	{
+		cs_set_player_maxspeed_auto(ID_FROST_REMOVE, zp_class_zombie_get_speed(zp_class_zombie_get_current(ID_FROST_REMOVE)))
+	}
+	else 
+	{
+		cs_set_player_maxspeed_auto(ID_FROST_REMOVE, zp_class_human_get_speed(zp_class_human_get_current(ID_FROST_REMOVE)))
+	}
 	
 	// Restore rendering
 	fm_set_rendering_float(ID_FROST_REMOVE, g_FrozenRenderingFx[ID_FROST_REMOVE], g_FrozenRenderingColor[ID_FROST_REMOVE], g_FrozenRenderingRender[ID_FROST_REMOVE], g_FrozenRenderingAmount[ID_FROST_REMOVE])
