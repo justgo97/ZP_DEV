@@ -1,3 +1,15 @@
+- Version: 5.0.9-dev (June 03, 2019)
+* Added auto respawn on join when deathmatch enabled
+* Frost grenade now uses the speed api for less speed bugs
+
+- Version: 5.0.9 (June 03, 2019)
+* Added support for new amxx versions
+* Fixed game play fixes not working without survivor class loaded
+* API: Added "zp_class_human_get_speed(classid)"
+* API: Added "zp_class_human_get_gravity(classid)"
+* API: Added "zp_class_zombie_get_speed(classid)"
+* API: Added "zp_class_zombie_get_gravity(classid)"
+
 - Version: 5.0.8a (Jul 22, 2014)
 * Fixed run time error "Couldn't create temp file" (Settings API)
 * Fixed run time error "[ZP] Invalid Player" (Extra item: Infection Bomb)
