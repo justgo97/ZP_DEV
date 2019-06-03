@@ -1,4 +1,4 @@
 # ZP_UN
 
-Thread on Alledmodders :
+Thread on Alliedmodders :
 https://forums.alliedmods.net/showthread.php?t=316667
