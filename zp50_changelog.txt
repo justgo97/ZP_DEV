@@ -1,3 +1,6 @@
+- Version: 5.0.9a-dev (June 04, 2019)
+* Made the check for invalid player earlier for auto respawn when joining
+
 - Version: 5.0.9-dev (June 03, 2019)
 * Added auto respawn on join when deathmatch enabled
 * Frost grenade now uses the speed api for less speed bugs
