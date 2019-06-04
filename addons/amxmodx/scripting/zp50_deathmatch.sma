@@ -61,6 +61,9 @@ public fw_JoinTeam()
 	if(get_pcvar_num(cvar_deathmatch))
 	{
 		new id = read_data(1);
+		
+		if(!is_user_connected(id) || is_user_alive(id)) 
+			return; 
 
 		// Respawn if human/zombie?
 		if ((zp_core_is_zombie(id) && !get_pcvar_num(cvar_respawn_zombies)) 
@@ -70,9 +73,6 @@ public fw_JoinTeam()
 		static user_team[32]; 
 		
 		read_data(2, user_team, charsmax(user_team)); 
-		
-		if(!is_user_connected(id) || is_user_alive(id)) 
-			return; 
 		
 		switch(user_team[0]) 
 		{
