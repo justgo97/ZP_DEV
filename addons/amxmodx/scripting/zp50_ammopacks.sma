@@ -88,11 +88,7 @@ public client_putinserver(id)
 	g_AmmoPacks[id] = get_pcvar_num(cvar_starting_ammo_packs)
 }
 
-#if AMXX_VERSION_NUM < 183
-public client_disconnect(id)
-#else
 public client_disconnected(id)
-#endif
 {
 	remove_task(id+TASK_HIDEMONEY)
 }
