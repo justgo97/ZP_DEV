@@ -16,7 +16,6 @@
 
 new g_HamsNotRegistered
 new g_CZBotPlayerID
-new g_MaxPlayers
 new cvar_bot_quota
 
 new Array:g_PluginID
@@ -42,7 +41,6 @@ public plugin_init()
 {
 	register_plugin("[CS] Ham Hooks for Bots API", "1.0", "WiLS")
 	
-	g_MaxPlayers = get_maxplayers()
 	cvar_bot_quota = get_cvar_pointer("bot_quota")
 }
 
@@ -150,22 +148,18 @@ public native_enable_ham_forward_bots(plugin_id, num_params)
 	return true;
 }
 
-#if AMXX_VERSION_NUM < 183
-public client_disconnect(id_leaving)
-#else
 public client_disconnected(id_leaving)
-#endif
 {
 	// Our CZ Bot used for registering hooks is leaving
 	if (id_leaving == g_CZBotPlayerID)
 	{
 		// Can we find a replacement?
 		new index = 1
-		while ((!is_user_connected(index) || !is_user_bot(index) || index == id_leaving) && (index <= g_MaxPlayers))
+		while ((!is_user_connected(index) || !is_user_bot(index) || index == id_leaving) && (index <= MaxClients))
 			index++ // keep looping
 		
 		// Update player ID
-		if (index <= g_MaxPlayers)
+		if (index <= MaxClients)
 			g_CZBotPlayerID = index
 		else
 			g_CZBotPlayerID = 0
